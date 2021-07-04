@@ -1,0 +1,17 @@
+---
+- name: LXD Init
+  block:
+    - name: load preseed template
+      set_fact:
+        preseed: "{{ lookup('template', 'lxd-init-preseed.yml.j2') }}"
+
+    - name: DEBUG | lxd preseed
+      debug:
+        var: preseed
+        verbosity: 1
+
+    - name: lxd init --preseed
+      command: lxd init --preseed <
+      args:
+        stdin: "{{ preseed }}"
+

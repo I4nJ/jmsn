@@ -1,0 +1,10 @@
+---
+- name: Update Metal
+  hosts: steel 
+  become: yes
+  roles:
+    - lxd
+
+  tasks:
+    - name: something
+      command: 'ls'

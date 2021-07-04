@@ -1,0 +1,12 @@
+---
+- name: Include version specific variables
+  include_vars: " {{ ansible_distribution }}-{{ ansible_distribution_version}}.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+# install the LTS version of snap. 4.0 supported till 2025
+- name: Install LXD
+  become: true
+  command: snap install lxd --channel=4.0/stable
+
+- include: lxd-init.yml
+
