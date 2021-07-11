@@ -1,11 +1,17 @@
 ---
-- name: Update Metal
-  hosts: steel 
+- name: Update Iron
+  hosts: iron 
   become: yes
   roles:
     - lxd
 
   tasks:
+    - name: 'update cache and upgrade'
+      apt:
+        upgrade: full
+        update_cache: yes
+        autoremove: yes
+
     # just seeing if I can avoid the lxd_container module 
     # would probably be better to use it but I need to practise 
     # my shell scripting
