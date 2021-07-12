@@ -6,11 +6,29 @@
     - lxd
 
   tasks:
-    - name: 'update cache and upgrade'
-      apt:
-        upgrade: full
-        update_cache: yes
-        autoremove: yes
+    # - name: 'update cache and upgrade'
+      # apt:
+        # upgrade: full
+        # update_cache: yes
+        # autoremove: yes
+ 
+    - name: "Ash's container profile"
+      shell: >
+        lxc profile list | awk '/ash/ { print $2 }'
+      register: ash_profile_listed
+ 
+    - name: "Create Ash's container profile"
+      shell: lxc profile create ash
+      when: ash_profile_listed.stdout != 'ash'
+
+    - name: Load Ash's profile
+      set_fact:
+        ash_profile: "{{ lookup('template', 'lxd-ash-profile.yml.j2') }}"
+
+    - name: Edit Ash's profile
+      shell: |
+        echo "{{ ash_profile }}" | lxc profile edit ash
+
 
     # just seeing if I can avoid the lxd_container module 
     # would probably be better to use it but I need to practise 
@@ -26,7 +44,7 @@
         verbosity: 1
         
     - name: 'Create container ash'
-      command: 'lxc launch ubuntu:20.04 ash'
+      command: 'lxc launch ubuntu:20.04 ash -p default -p ash'
       when: ash_ls_result.stdout != 'ash'
       register: ash_launch_output
 
@@ -35,4 +53,7 @@
         msg: "{{ ash_launch_output }}"
         verbosity: 1
       when: ash_ls_result.stdout != 'ash'
+
+
+
 
