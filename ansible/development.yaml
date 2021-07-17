@@ -1,0 +1,10 @@
+all:
+  hosts:
+    iron:
+      ansible_connection: local  
+      become_user: ianj
+    ash:
+      ansible_connection: ssh
+      ansible_user: ianj 
+      ansible_host: 10.0.0.15
+      ansible_port: 22

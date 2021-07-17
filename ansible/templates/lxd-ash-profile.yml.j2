@@ -1,4 +1,12 @@
-config: {}
+config:
+  user.user-data: |
+    #cloud-config
+    users:
+      - name: ianj
+        ssh-import-id: gh:I4nJ
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        groups: users, admin
 name: ash
 devices:
   eth0:
@@ -6,3 +14,7 @@ devices:
     type: nic
     network: lxdbr0
     ipv4.address: 10.0.0.15
+  proxyssh:
+    connect: tcp:127.0.0.1:22
+    listen: tcp:0.0.0.0:22080
+    type: proxy
