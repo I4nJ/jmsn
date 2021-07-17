@@ -1,0 +1,45 @@
+---
+- name: Ash
+  hosts: ash # containers names after types of wood
+
+  tasks:
+    - name: Ash, apt
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        pkg:
+          - automake
+          - build-essential
+          - pkg-config
+          - libffi-dev
+          - libgmp-dev
+          - libssl-dev
+          - libtinfo-dev
+          - libsystemd-dev
+          - zlib1g-dev
+          - make
+          - g++
+          - tmux
+          - git
+          - jq
+          - wget
+          - libncursesw5
+          - libtool
+          - autoconf
+
+        
+    - name: Ash, install ghcup
+      args:
+        creates: ~/.ghcup
+      environment:
+        BOOTSTRAP_HASKELL_NONINTERACTIVE: "1"
+      shell: |
+        curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    
+    - name: Ash, ghcup in $PATH
+      lineinfile:
+        path: ~/.profile
+        line: PATH="$HOME/.ghcup/bin:$PATH"
+
+        
