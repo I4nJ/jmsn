@@ -35,7 +35,7 @@
     # my shell scripting
     - name: 'Register lxc ls search for ash container'
       shell: >
-        lxc ls --fast | awk '/ash/ { print $2 }'
+        lxc ls -c n | awk '/ash/ { gsub(/ /, "", $2); print $2 }'
       register: ash_ls_result
 
     - name: 'Debug | ash_container_presnt'
